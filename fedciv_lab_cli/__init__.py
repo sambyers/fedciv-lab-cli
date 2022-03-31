@@ -36,11 +36,19 @@ def lab_status(arg1):
     print('you inputted arg1: ', arg1)
     print(json.dumps(resp.json(), indent=4))
 
-
+@click.command()
+def example():
+    # Example of request to API that will call to external service
+    try:
+        resp = requests.get('http://127.0.0.1:5000/example')
+    except requests.exceptions.RequestException as e:
+        raise SystemExit(e)
+    print("This is an example command that calls the API for an external service.")
+    print(json.dumps(resp.json(), indent=4))
 
 cli.add_command(reset_lab)
 cli.add_command(lab_status)
-
+cli.add_command(example)
 
 if __name__ == "__main__":
     cli()
