@@ -1,5 +1,5 @@
 # Main CLI code here
-
+import json
 import click
 import requests
 from requests.exceptions import HTTPError
@@ -29,11 +29,12 @@ def lab_status(arg1):
     #send info to localhost:5000 running the flask app/API backend
     try:
         #template api call for now
-        requests.post('127.0.0.1:5000/status', data = {"devices":'device'})
+        resp = requests.get('http://127.0.0.1:5000/status')
         
     except requests.exceptions.RequestException as e:  
         raise SystemExit(e)
     print('you inputted arg1: ', arg1)
+    print(json.dumps(resp.json(), indent=4))
 
 
 
