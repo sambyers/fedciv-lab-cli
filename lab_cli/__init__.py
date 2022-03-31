@@ -29,7 +29,7 @@ def lab_status(arg1):
     #send info to localhost:5000 running the flask app/API backend
     try:
         #template api call for now
-        requests.post('127.0.0.1:5000/reset', data = {"devices":'device'})
+        requests.post('127.0.0.1:5000/status', data = {"devices":'device'})
         
     except requests.exceptions.RequestException as e:  
         raise SystemExit(e)
