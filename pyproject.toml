@@ -14,6 +14,7 @@ pytest = "^7.1.1"
 tox = "^3.24.5"
 black = "^22.3.0"
 flake8 = "^4.0.1"
+requests-mock = "^1.9.3"
 
 [tool.poetry.scripts]
 civlab = "fedciv_lab_cli:cli"
@@ -21,22 +22,3 @@ civlab = "fedciv_lab_cli:cli"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.tox]
-legacy_tox_ini = """
-[tox]
-skipsdist = true
-envlist = py310
-
-[gh-actions]
-python =
-    3.10: py310
-
-[testenv]
-whitelist_externals = poetry
-commands =
-    poetry install -v
-    poetry run black . -v
-    poetry run flake8 --max-line-length 88
-    poetry run python -m pytest -v
-"""

@@ -1,8 +1,7 @@
-# Main CLI code here
 import json
 import click
 import requests
-from requests.exceptions import HTTPError
+from .services import LabAPI
 
 
 @click.group()
@@ -26,33 +25,15 @@ def reset_lab(arg1, arg2):
 
 
 @click.command()
-@click.option("--arg1", help="input arg1")
-def lab_status(arg1):
-    # send info to localhost:5000 running the flask app/API backend
-    try:
-        # template api call for now
-        resp = requests.get("http://127.0.0.1:5000/status")
-
-    except HTTPError as e:
-        raise SystemExit(e)
-    print("you inputted arg1: ", arg1)
-    print(json.dumps(resp.json(), indent=4))
-
-
-@click.command()
-def example():
-    # Example of request to API that will call to external service
-    try:
-        resp = requests.get("http://127.0.0.1:5000/example")
-    except HTTPError as e:
-        raise SystemExit(e)
-    print("This is an example command that calls the API for an external service.")
-    print(json.dumps(resp.json(), indent=4))
+def status():
+    # send info to localhost running the API
+    api = LabAPI("http://localhost")
+    resp = api.get_status()
+    print(json.dumps(resp, indent=4))
 
 
 cli.add_command(reset_lab)
-cli.add_command(lab_status)
-cli.add_command(example)
+cli.add_command(status)
 
 if __name__ == "__main__":
     cli()
