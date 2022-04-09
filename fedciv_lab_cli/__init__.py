@@ -24,11 +24,15 @@ def reset_lab(arg1, arg2):
     print("you inputted arg1: ", arg1, " arg2 is: ", arg2)
 
 
+@click.option("--name", help="Name of device for which to get status.")
 @click.command()
-def status():
-    # send info to localhost running the API
+def status(name):
     api = LabAPI("http://localhost")
-    resp = api.get_status()
+    if name:
+        resp = api.get_status(name=name)
+    else:
+        print('Fetching status for all devices in the lab. This will take a few moments...')
+        resp = api.get_status()
     print(json.dumps(resp, indent=4))
 
 
