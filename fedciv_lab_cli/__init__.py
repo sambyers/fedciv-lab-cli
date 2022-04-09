@@ -1,8 +1,11 @@
 import json
+import os
 import click
 import requests
 from .services import LabAPI
 
+
+api_url = os.getenv('CIVLAB_URL')
 
 @click.group()
 def cli():
@@ -27,7 +30,7 @@ def reset_lab(arg1, arg2):
 @click.option("--name", help="Name of device for which to get status.")
 @click.command()
 def status(name):
-    api = LabAPI("http://localhost")
+    api = LabAPI(api_url)
     if name:
         resp = api.get_status(name=name)
     else:
