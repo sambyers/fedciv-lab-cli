@@ -14,3 +14,9 @@ class LabAPI:
         except requests.exceptions.HTTPError as e:
             raise SystemExit(e)
         return resp.json()
+
+    def start_reset(self, name: str = None):
+        r = {"status": "Not implemented"}
+        if name:
+            r.update({"name": name})
+        return r

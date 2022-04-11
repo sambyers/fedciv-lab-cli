@@ -1,0 +1,1 @@
+poetry run pyinstaller --onefile fedciv_lab_cli/__init__.py --name civlab
