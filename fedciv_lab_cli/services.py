@@ -29,7 +29,7 @@ class LabAPI:
                 resp = requests.put(f"{self.base_url}/reset/{name}")
 
                 #if name var is 0, reset whole lab
-            else:
+            elif 'all' in name:
                 resp = requests.put(f"{self.base_url}/reset")
         except requests.exceptions.HTTPError as e:
             raise SystemExit(e)

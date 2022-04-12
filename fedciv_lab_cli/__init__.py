@@ -1,8 +1,7 @@
-from json import dumps
-from os import getenv
-from sys import exit
+import json
 import click
-from fedciv_lab_cli.services import LabAPI
+import requests
+from .services import LabAPI
 
 
 @click.group()
@@ -10,44 +9,47 @@ def cli():
     pass
 
 
-def get_url():
-    url = getenv("CIVLAB_URL")
-    if not url:
-        print("Environmental variable CIVLAB_URL missing!")
-        print("Ex. CIVLAB_URL=http://example.com")
-        exit()
-    return url
+@click.command()
+@click.option("--deviceName", help="Input 'all' or appliance name (ise, dnac, vmanage) or hostname of device to reset")
+def reset_lab(devicename):
+    # send info to localhost:5000 running the flask app/API backend
+    try:
+        api = LabAPI("http://localhost")
+        resp = api.start_reset(devicename)
+        print(json.dumps(resp, indent=4))
+    except requests.exceptions.RequestException as e:
+        raise SystemExit(e)
+
+    
+
+@click.command()
+def reset_dnac():
+    # send info to localhost running the API
+    api = LabAPI("http://localhost")
+    resp = api.get_status()
+    print(json.dumps(resp, indent=4))
 
 
 @click.command()
-@click.option("--name", help="Name of device to reset.")
-def reset(name: str):
-    api = LabAPI(get_url())
-    if name:
-        resp = api.start_reset(name=name)
-    else:
-        print("Resetting all devices in the lab. This will take 30-45 minutes.")
-        resp = api.start_reset()
-    print(dumps(resp, indent=4))
+def status():
+    # send info to localhost running the API
+    api = LabAPI("http://localhost")
+    resp = api.get_status()
+    print(json.dumps(resp, indent=4))
 
-
-@click.option("--name", help="Name of device for which to get status.")
 @click.command()
-def status(name: str):
-    api = LabAPI(get_url())
-    if name:
-        resp = api.get_status(name=name)
-    else:
-        print(
-            "Fetching status for all devices in the lab. \
-            This will take a few moments..."
-        )
-        resp = api.get_status()
-    print(dumps(resp, indent=4))
+@click.option("--jobID", help="Input Job ID")
+def job_status(jobID):
+    # send info to localhost running the API
+    api = LabAPI("http://localhost")
+    resp = api.job_status(jobID)
+    print(json.dumps(resp, indent=4))
 
 
-cli.add_command(reset)
+
+cli.add_command(reset_lab)
 cli.add_command(status)
+cli.add_command(job_status)
 
 if __name__ == "__main__":
     cli()
