@@ -1,4 +1,4 @@
-![FedCiv Lab CLI CI](https://github.com/sambyers/fedciv-lab-cli/actions/workflows/main-commit-pr.yml/badge.svg)
+[![.github/workflows/lint-fmt-test.yml](https://github.com/sambyers/fedciv-lab-cli/actions/workflows/lint-fmt-test.yml/badge.svg)](https://github.com/sambyers/fedciv-lab-cli/actions/workflows/lint-fmt-test.yml)
 
 # FedCiv Lab CLI
 
