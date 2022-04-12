@@ -1,6 +1,4 @@
 ---
-name: FedCiv Lab CLI CI
-
 on:
   push:
     branches: ["main"]
