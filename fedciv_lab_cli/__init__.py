@@ -20,15 +20,6 @@ def reset_lab(devicename):
     except requests.exceptions.RequestException as e:
         raise SystemExit(e)
 
-    
-
-@click.command()
-def reset_dnac():
-    # send info to localhost running the API
-    api = LabAPI("http://localhost")
-    resp = api.get_status()
-    print(json.dumps(resp, indent=4))
-
 
 @click.command()
 def status():
