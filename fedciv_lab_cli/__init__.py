@@ -27,7 +27,8 @@ def status(devicename):
     # send info to localhost running the API
     api = LabAPI("http://localhost")
     resp = api.get_status(devicename)
-    print(json.dumps(resp, indent=4))
+    #print(json.dumps(resp, indent=4))
+    print(resp)
 
 @click.command()
 @click.option("--jobID", help="Input Job ID")
