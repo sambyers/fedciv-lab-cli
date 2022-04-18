@@ -1,9 +1,8 @@
 import json
+import os
 import click
 import requests
-from services import LabAPI
-import os
-
+from fedciv_lab_cli.services import LabAPI
 
 @click.group()
 def cli():
