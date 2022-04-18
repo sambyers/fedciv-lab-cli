@@ -2,6 +2,7 @@ import json
 import click
 import requests
 from services import LabAPI
+import os
 
 
 @click.group()
@@ -14,7 +15,7 @@ def cli():
 def reset_lab(devicename):
     # send info to localhost:5000 running the flask app/API backend
     try:
-        api = LabAPI("http://localhost")
+        api = LabAPI(os.environ["CIVLAB_URL"])
         resp = api.start_reset(devicename)
         print(json.dumps(resp, indent=4))
     except requests.exceptions.RequestException as e:
@@ -25,7 +26,7 @@ def reset_lab(devicename):
 @click.option("--devicename", help="Input 'all' or appliance name (ise, dnac, vmanage) or hostname of device to reset")
 def status(devicename):
     # send info to localhost running the API
-    api = LabAPI("http://localhost:80")
+    api = LabAPI(os.environ["CIVLAB_URL"])
     resp = api.get_status(devicename)
     print(json.dumps(resp, indent=4))
 
@@ -33,7 +34,7 @@ def status(devicename):
 @click.option("--jobID", help="Input Job ID")
 def job_status(jobID):
     # send info to localhost running the API
-    api = LabAPI("http://localhost")
+    api = LabAPI(os.environ["CIVLAB_URL"])
     resp = api.job_status(jobID)
     print(json.dumps(resp, indent=4))
 
