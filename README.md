@@ -8,6 +8,7 @@ https://github.com/sambyers/fedciv-lab-cli/raw/main/dist/civlab
 ## Setup
 ```shell
 export CIVLAB_URL=http://x.x.x.x
+export TOKEN=access_token
 chmod +x civlab
 ```
 
