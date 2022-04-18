@@ -4,7 +4,7 @@ import requests, os
 class LabAPI:
     def __init__(self, url):
         self.base_url = url
-        self.headers = {'access_token':os.environ['TOKEN']}
+        self.headers = {'access_token':os.environ['CIVLAB_API_KEY']}
 
     def get_status(self, name: str = None):
         try:
