@@ -1,7 +1,7 @@
 import json
 import click
 import requests
-from .services import LabAPI
+from services import LabAPI
 
 
 @click.group()
@@ -10,7 +10,7 @@ def cli():
 
 
 @click.command()
-@click.option("--deviceName", help="Input 'all' or appliance name (ise, dnac, vmanage) or hostname of device to reset")
+@click.option("--devicename", help="Input 'all' or appliance name (ise, dnac, vmanage) or hostname of device to reset")
 def reset_lab(devicename):
     # send info to localhost:5000 running the flask app/API backend
     try:
@@ -22,10 +22,11 @@ def reset_lab(devicename):
 
 
 @click.command()
-def status():
+@click.option("--devicename", help="Input 'all' or appliance name (ise, dnac, vmanage) or hostname of device to reset")
+def status(devicename):
     # send info to localhost running the API
     api = LabAPI("http://localhost")
-    resp = api.get_status()
+    resp = api.get_status(devicename)
     print(json.dumps(resp, indent=4))
 
 @click.command()

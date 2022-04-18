@@ -7,9 +7,9 @@ class LabAPI:
 
     def get_status(self, name: str = None):
         try:
-            if name:
+            if name != 'all':
                 resp = requests.get(f"{self.base_url}/status/{name}")
-            else:
+            elif name == 'all':
                 resp = requests.get(f"{self.base_url}/status")
         except requests.exceptions.HTTPError as e:
             raise SystemExit(e)
