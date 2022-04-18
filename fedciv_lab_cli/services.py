@@ -23,10 +23,10 @@ class LabAPI:
             name = name.strip()
             if name != 'all':
                 
-                resp = requests.get(f"{self.base_url}/status/{name}", headers = self.headers)
+                resp = requests.get(f"{self.base_url}/reset/{name}", headers = self.headers)
             elif name == 'all':
                 
-                resp = requests.get(f"{self.base_url}/status", headers = self.headers)
+                resp = requests.get(f"{self.base_url}/reset", headers = self.headers)
         except requests.exceptions.HTTPError as e:
             raise SystemExit(e)
         
