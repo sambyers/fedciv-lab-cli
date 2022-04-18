@@ -25,7 +25,7 @@ def reset_lab(devicename):
 @click.option("--devicename", help="Input 'all' or appliance name (ise, dnac, vmanage) or hostname of device to reset")
 def status(devicename):
     # send info to localhost running the API
-    api = LabAPI("http://10.83.16.185")
+    api = LabAPI("http://localhost:80")
     resp = api.get_status(devicename)
     print(json.dumps(resp, indent=4))
 
