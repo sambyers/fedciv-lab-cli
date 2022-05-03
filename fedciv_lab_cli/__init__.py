@@ -49,11 +49,12 @@ def status(devicename):
 
 
 @click.command("job", help="Provide a Job ID argument to get the status of a job.")
-@click.argument("job_id")
-def job_status(jobID):
+@click.argument("id")
+def job_status(id):
     api = LabAPI(LAB_URL, LAB_TOKEN)
-    jobID = jobID.strip()
-    resp = api.job_status(jobID)
+    id = id.strip()
+    id = id.lower()
+    resp = api.job_status(id)
     click.echo(json.dumps(resp, indent=4))
 
 
