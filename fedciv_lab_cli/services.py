@@ -1,42 +1,38 @@
-import requests, os
+import requests
 
 
 class LabAPI:
-    def __init__(self, url):
+    def __init__(self, url, token):
         self.base_url = url
-        self.headers = {'access_token':os.environ['CIVLAB_API_KEY']}
+        self.headers = {"access_token": token}
+        self.verify = False
+
+    def request(self, method: str, path: str, params: dict = None, body: dict = None):
+        method = method.lower()
+        req = getattr(requests, method)
+        url = f"{self.base_url}{path}"
+        try:
+            resp = req(
+                url, headers=self.headers, verify=self.verify, params=params, json=body
+            )
+        except requests.exceptions.HTTPError as e:
+            raise SystemExit(e)
+        return resp.json()
 
     def get_status(self, name: str = None):
-        try:
-            name = name.strip()
-            if name != 'all':
-                
-                resp = requests.get(f"{self.base_url}/status/{name}", headers = self.headers)
-            elif name == 'all':
-                resp = requests.get(f"{self.base_url}/status", headers = self.headers)
-        except requests.exceptions.HTTPError as e:
-            raise SystemExit(e)
-        return resp.json()
+        return self.request("get", f"/status/{name}")
+
+    def get_status_all(self):
+        return self.request("get", "/status")
 
     def start_reset(self, name: str = None):
-        try:
-            name = name.strip()
-            if name != 'all':
-                
-                resp = requests.get(f"{self.base_url}/reset/{name}", headers = self.headers)
-            elif name == 'all':
-                
-                resp = requests.get(f"{self.base_url}/reset", headers = self.headers)
-        except requests.exceptions.HTTPError as e:
-            raise SystemExit(e)
-        
-        return resp.json()
+        return self.request("put", f"/reset/{name}")
+
+    def start_reset_all(self):
+        return self.request("put", "/reset")
 
     def job_status(self, jobID: str = None):
-        try:
-            jobID = jobID.strip()
-            resp = requests.put(f"{self.base_url}/job/{jobID}", headers = self.headers)
-        except requests.exceptions.HTTPError as e:
-            raise SystemExit(e)
+        return self.request("get", f"/job/{jobID}")
 
-        return resp.json()
+    def get_list(self):
+        return self.request("get", "/list")
