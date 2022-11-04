@@ -22,6 +22,9 @@ class LabAPI:
     def get_status(self, name: str = None):
         return self.request("get", f"/status/{name}")
 
+    def get_status_netdev(self):
+        return self.request("get", f"/status/network-devices")
+
     def get_status_all(self):
         return self.request("get", "/status")
 

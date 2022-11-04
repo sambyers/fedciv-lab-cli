@@ -1,5 +1,6 @@
 import json
 import os
+import time
 import click
 from fedciv_lab_cli.services import LabAPI
 
@@ -18,11 +19,16 @@ def cli():
     help=(
         "Provide a device name argument to reset. For "
         "available devices, use `civlab list`. "
-        "Use the `civlan reset all` to reset all lab devices."
+        "Use the `civlan reset all` to reset all lab devices. "
+        f"Check out the API docs at {LAB_URL}/docs"
     ),
 )
 @click.argument("devicename")
 def reset_lab(devicename):
+    click.echo("Depending on which device you are resetting, this could take from 5 to 20 minutes. "
+               "Check status of the job by using `civlab job [JOB ID] and "
+               "after the job is finished, check status of the device "
+               "by using `civlab status [DEVICE NAME].")
     api = LabAPI(LAB_URL, LAB_TOKEN)
     devicename = devicename.strip()
     devicename = devicename.lower()
@@ -41,11 +47,19 @@ def reset_lab(devicename):
 )
 @click.argument("devicename")
 def status(devicename):
+    start_time = time.time()
     api = LabAPI(LAB_URL, LAB_TOKEN)
     devicename = devicename.strip()
     devicename = devicename.lower()
-    resp = api.get_status(devicename)
+    if devicename == "all":
+        resp = api.get_status_all()
+    elif devicename == "network-devices":
+        resp = api.get_status_netdev()
+    else:
+        resp = api.get_status(devicename)
+    completion_time = round(time.time() - start_time, 2)
     click.echo(json.dumps(resp, indent=4))
+    click.echo(f"Completed in {completion_time}s")
 
 
 @click.command("job", help="Provide a Job ID argument to get the status of a job.")

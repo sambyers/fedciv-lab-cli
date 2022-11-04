@@ -4,7 +4,7 @@ from fedciv_lab_cli import services
 
 @pytest.fixture()
 def labapi():
-    yield services.LabAPI("http://test.lab")
+    yield services.LabAPI("http://test.lab", "12345")
 
 
 @pytest.fixture()
@@ -79,7 +79,7 @@ def mock_status_data():
 
 def test_get_status(requests_mock, labapi, mock_status_data):
     requests_mock.get("http://test.lab/status", json=mock_status_data)
-    resp = labapi.get_status()
+    resp = labapi.get_status("test")
     assert resp == mock_status_data
 
 
