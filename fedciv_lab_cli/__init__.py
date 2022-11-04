@@ -1,8 +1,8 @@
 import json
 import os
-import time
 import click
 from fedciv_lab_cli.services import LabAPI
+from fedciv_lab_cli.util import timer
 
 
 LAB_URL = os.environ["CIVLAB_URL"]
@@ -46,8 +46,8 @@ def reset_lab(devicename):
     ),
 )
 @click.argument("devicename")
+@timer
 def status(devicename):
-    start_time = time.time()
     api = LabAPI(LAB_URL, LAB_TOKEN)
     devicename = devicename.strip()
     devicename = devicename.lower()
@@ -57,9 +57,7 @@ def status(devicename):
         resp = api.get_status_netdev()
     else:
         resp = api.get_status(devicename)
-    completion_time = round(time.time() - start_time, 2)
     click.echo(json.dumps(resp, indent=4))
-    click.echo(f"Completed in {completion_time}s")
 
 
 @click.command("job", help="Provide a Job ID argument to get the status of a job.")
