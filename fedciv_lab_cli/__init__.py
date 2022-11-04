@@ -13,18 +13,16 @@ LAB_TOKEN = os.environ["CIVLAB_API_KEY"]
 def cli():
     pass
 
-
 @click.command(
     "reset",
     help=(
         "Provide a device name argument to reset. For "
         "available devices, use `civlab list`. "
-        "Use the `civlan reset all` to reset all lab devices. "
-        f"Check out the API docs at {LAB_URL}/docs"
+        "Use the `civlab reset all` to reset all lab devices."
     ),
 )
 @click.argument("devicename")
-def reset_lab(devicename):
+def reset(devicename):
     click.echo("Depending on which device you are resetting, this could take from 5 to 20 minutes. "
                "Check status of the job by using `civlab job [JOB ID] and "
                "after the job is finished, check status of the device "
@@ -41,7 +39,7 @@ def reset_lab(devicename):
     help=(
         "Provide a device name argument to get status. For "
         "available devices, use `civlab list`. "
-        "Use the `civlan status all` to get all lab device status and  "
+        "Use the `civlab status all` to get all lab device status and  "
         "`civlab status network-devices` for just network devices. "
     ),
 )
@@ -77,7 +75,7 @@ def get_list():
     click.echo(json.dumps(resp, indent=4))
 
 
-cli.add_command(reset_lab)
+cli.add_command(reset)
 cli.add_command(status)
 cli.add_command(job_status)
 cli.add_command(get_list)
