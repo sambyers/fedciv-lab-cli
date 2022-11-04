@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "fedciv_lab_cli"
-version = "0.1.0"
+version = "1.0"
 description = ""
 authors = ["Sam Byers", "Yashar Asgari", "Paul Merlitti"]
 
@@ -8,7 +8,6 @@ authors = ["Sam Byers", "Yashar Asgari", "Paul Merlitti"]
 python = ">=3.10,<3.11"
 click = "^8.1.1"
 requests = "^2.27.1"
-pyinstaller = "^4.10"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.1"
