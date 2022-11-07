@@ -11,65 +11,17 @@ def labapi():
 def mock_status_data():
     resp = {
         "status": {
-            "dnac": None,
-            "sdwan": None,
-            "ise": None,
+            "dnac": {
+                "host": "10.1.1.1",
+                "last_restore": "10-26 19:36:57",
+                "restore_file": "multidomain3.tar.gz",
+            },
             "devices": [
                 {
                     "name": "br1-sw1",
+                    "host": "10.1.1.1",
+                    "default_cfg_on_flash": True,
                     "status": "default",
-                    "ip": "10.83.16.159",
-                    "credentials": None,
-                    "default_cfg": True,
-                },
-                {
-                    "name": "br2-sw1",
-                    "status": "default",
-                    "ip": "10.83.16.160",
-                    "credentials": None,
-                    "default_cfg": True,
-                },
-                {
-                    "name": "campus1-bn1",
-                    "status": "configured",
-                    "ip": "10.83.16.161",
-                    "credentials": None,
-                    "default_cfg": True,
-                },
-                {
-                    "name": "campus1-bn2",
-                    "status": "configured",
-                    "ip": "10.83.16.162",
-                    "credentials": None,
-                    "default_cfg": True,
-                },
-                {
-                    "name": "campus1-fe1",
-                    "status": "configured",
-                    "ip": "10.83.16.163",
-                    "credentials": None,
-                    "default_cfg": True,
-                },
-                {
-                    "name": "campus1-fe2",
-                    "status": "configured",
-                    "ip": "10.83.16.164",
-                    "credentials": None,
-                    "default_cfg": True,
-                },
-                {
-                    "name": "campus2-bn1",
-                    "status": "default",
-                    "ip": "10.83.16.165",
-                    "credentials": None,
-                    "default_cfg": True,
-                },
-                {
-                    "name": "campus2-fe1",
-                    "status": "configured",
-                    "ip": "10.83.16.166",
-                    "credentials": None,
-                    "default_cfg": True,
                 },
             ],
         }
@@ -77,14 +29,35 @@ def mock_status_data():
     yield resp
 
 
-def test_get_status(requests_mock, labapi, mock_status_data):
+@pytest.fixture()
+def mock_list_data():
+    resp = {
+        "appliances": [
+            {"name": "dnac", "host": "10.1.1.1"},
+        ],
+        "network_devices": [
+            {"name": "br1-sw1", "host": "10.1.1.1"},
+        ],
+    }
+    yield resp
+
+
+def test_get_status_all(requests_mock, labapi, mock_status_data):
     requests_mock.get("http://test.lab/status", json=mock_status_data)
-    resp = labapi.get_status("test")
+    resp = labapi.get_status_all()
     assert resp == mock_status_data
 
 
-def test_get_status_device(labapi):
-    pass
+def test_get_status_netdevices(requests_mock, labapi, mock_status_data):
+    requests_mock.get("http://test.lab/status/network-devices", json=mock_status_data)
+    resp = labapi.get_status_netdev()
+    assert resp == mock_status_data
+
+
+def test_get_status_device(requests_mock, labapi, mock_status_data):
+    requests_mock.get("http://test.lab/status/test", json=mock_status_data)
+    resp = labapi.get_status("test")
+    assert resp == mock_status_data
 
 
 def test_reset_lab(labapi):

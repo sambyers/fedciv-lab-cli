@@ -2,16 +2,24 @@ import json
 import os
 import click
 from fedciv_lab_cli.services import LabAPI
-from fedciv_lab_cli.util import timer
+from fedciv_lab_cli.util import echo_time
 
 
-LAB_URL = os.environ["CIVLAB_URL"]
-LAB_TOKEN = os.environ["CIVLAB_API_KEY"]
+LAB_URL = os.getenv("CIVLAB_URL")
+LAB_TOKEN = os.getenv("CIVLAB_API_KEY")
+
+if not LAB_URL:
+    click.echo("CIVLAB_URL environment variable not set.")
+    quit()
+if not LAB_TOKEN:
+    click.echo("LAB_API_KEY environment variable not set.")
+    quit()
 
 
 @click.group()
 def cli():
     pass
+
 
 @click.command(
     "reset",
@@ -23,10 +31,13 @@ def cli():
 )
 @click.argument("devicename")
 def reset(devicename):
-    click.echo("Depending on which device you are resetting, this could take from 5 to 20 minutes. "
-               "Check status of the job by using `civlab job [JOB ID] and "
-               "after the job is finished, check status of the device "
-               "by using `civlab status [DEVICE NAME].")
+    click.echo(
+        "Depending on which device you are resetting, "
+        "this could take from 5 to 20 minutes. "
+        "Check status of the job by using `civlab job [JOB ID] and "
+        "after the job is finished, check status of the device "
+        "by using `civlab status [DEVICE NAME]."
+    )
     api = LabAPI(LAB_URL, LAB_TOKEN)
     devicename = devicename.strip()
     devicename = devicename.lower()
@@ -44,7 +55,7 @@ def reset(devicename):
     ),
 )
 @click.argument("devicename")
-@timer
+@echo_time
 def status(devicename):
     api = LabAPI(LAB_URL, LAB_TOKEN)
     devicename = devicename.strip()
