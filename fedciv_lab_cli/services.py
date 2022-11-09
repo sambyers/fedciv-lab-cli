@@ -34,6 +34,9 @@ class LabAPI:
     def start_reset_all(self):
         return self.request("put", "/reset")
 
+    def start_reset_netdev(self):
+        return self.request("put", "/reset/network-devices")
+
     def job_status(self, jobID: str = None):
         return self.request("get", f"/job/{jobID}")
 

@@ -41,7 +41,12 @@ def reset(devicename):
     api = LabAPI(LAB_URL, LAB_TOKEN)
     devicename = devicename.strip()
     devicename = devicename.lower()
-    resp = api.start_reset(devicename)
+    if devicename == "all":
+        resp = api.start_reset_all()
+    elif devicename == "network-devices":
+        resp = api.start_reset_netdev()
+    else:
+        resp = api.start_reset(devicename)
     click.echo(json.dumps(resp, indent=4))
 
 
