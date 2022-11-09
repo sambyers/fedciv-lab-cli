@@ -26,7 +26,9 @@ def cli():
     help=(
         "Provide a device name argument to reset. For "
         "available devices, use `civlab list`. "
-        "Use the `civlab reset all` to reset all lab devices."
+        "Use the `civlab reset all` to reset all lab devices "
+        "and `civlab reset network-devices` to reset all "
+        "network devices in the lab."
     ),
 )
 @click.argument("devicename")
