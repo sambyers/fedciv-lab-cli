@@ -6,11 +6,12 @@ class LabAPI:
         self.base_url = url
         self.headers = {"access_token": token}
         self.verify = False
+        self.version = "/v1"
 
     def request(self, method: str, path: str, params: dict = None, body: dict = None):
         method = method.lower()
         req = getattr(requests, method)
-        url = f"{self.base_url}{path}"
+        url = f"{self.base_url}{self.version}{path}"
         try:
             resp = req(
                 url, headers=self.headers, verify=self.verify, params=params, json=body
