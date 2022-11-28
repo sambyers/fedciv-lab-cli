@@ -6,6 +6,10 @@ from fedciv_lab_cli import services
 def labapi():
     yield services.LabAPI("http://test.lab", "12345")
 
+@pytest.fixture()
+def api_base_url():
+    yield "http://test.lab/v1"
+
 
 @pytest.fixture()
 def mock_status_data():
@@ -42,20 +46,20 @@ def mock_list_data():
     yield resp
 
 
-def test_get_status_all(requests_mock, labapi, mock_status_data):
-    requests_mock.get("http://test.lab/status", json=mock_status_data)
+def test_get_status_all(requests_mock, labapi, api_base_url, mock_status_data):
+    requests_mock.get(f"{api_base_url}/status", json=mock_status_data)
     resp = labapi.get_status_all()
     assert resp == mock_status_data
 
 
 def test_get_status_netdevices(requests_mock, labapi, mock_status_data):
-    requests_mock.get("http://test.lab/status/network-devices", json=mock_status_data)
+    requests_mock.get(f"{api_base_url}/status/network-devices/v1", json=mock_status_data)
     resp = labapi.get_status_netdev()
     assert resp == mock_status_data
 
 
 def test_get_status_device(requests_mock, labapi, mock_status_data):
-    requests_mock.get("http://test.lab/status/test", json=mock_status_data)
+    requests_mock.get(f"{api_base_url}/status/test/v1", json=mock_status_data)
     resp = labapi.get_status("test")
     assert resp == mock_status_data
 
