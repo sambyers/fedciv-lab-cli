@@ -8,11 +8,6 @@ def labapi():
 
 
 @pytest.fixture()
-def api_base_url():
-    yield "http://test.lab/v1"
-
-
-@pytest.fixture()
 def mock_status_data():
     resp = {
         "status": {
@@ -47,8 +42,19 @@ def mock_list_data():
     yield resp
 
 
-def test_get_status_all(requests_mock, labapi, api_base_url, mock_status_data):
-    requests_mock.get(f"{api_base_url}/status", json=mock_status_data)
+def test_get_list(requests_mock, labapi, mock_status_data):
+    requests_mock.get(
+        f"{labapi.base_url}/{labapi.version}/list",
+        json=mock_list_data
+    )
+    resp = labapi.get_list()
+    assert resp == mock_list_data
+
+def test_get_status_all(requests_mock, labapi, mock_status_data):
+    requests_mock.get(
+        f"{labapi.base_url}/{labapi.version}/status",
+        json=mock_status_data
+    )
     resp = labapi.get_status_all()
     assert resp == mock_status_data
 
@@ -59,7 +65,7 @@ def test_get_status_netdevices(
     mock_status_data
 ):
     requests_mock.get(
-        f"{api_base_url}/status/network-devices/v1",
+        f"{labapi.base_url}/{labapi.version}/status/network-devices",
         json=mock_status_data
     )
     resp = labapi.get_status_netdev()
@@ -67,7 +73,10 @@ def test_get_status_netdevices(
 
 
 def test_get_status_device(requests_mock, labapi, mock_status_data):
-    requests_mock.get(f"{api_base_url}/status/test/v1", json=mock_status_data)
+    requests_mock.get(
+        f"{labapi.base_url}/{labapi.version}/status/test",
+        json=mock_status_data
+    )
     resp = labapi.get_status("test")
     assert resp == mock_status_data
 
