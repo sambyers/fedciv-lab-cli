@@ -42,31 +42,24 @@ def mock_list_data():
     yield resp
 
 
-def test_get_list(requests_mock, labapi, mock_status_data):
-    requests_mock.get(
-        f"{labapi.base_url}/{labapi.version}/list",
-        json=mock_list_data
-    )
+def test_get_list(requests_mock, labapi, mock_list_data):
+    requests_mock.get(f"{labapi.base_url}/{labapi.version}/list", json=mock_list_data)
     resp = labapi.get_list()
     assert resp == mock_list_data
 
+
 def test_get_status_all(requests_mock, labapi, mock_status_data):
     requests_mock.get(
-        f"{labapi.base_url}/{labapi.version}/status",
-        json=mock_status_data
+        f"{labapi.base_url}/{labapi.version}/status", json=mock_status_data
     )
     resp = labapi.get_status_all()
     assert resp == mock_status_data
 
 
-def test_get_status_netdevices(
-    requests_mock,
-    labapi,
-    mock_status_data
-):
+def test_get_status_netdevices(requests_mock, labapi, mock_status_data):
     requests_mock.get(
         f"{labapi.base_url}/{labapi.version}/status/network-devices",
-        json=mock_status_data
+        json=mock_status_data,
     )
     resp = labapi.get_status_netdev()
     assert resp == mock_status_data
@@ -74,8 +67,7 @@ def test_get_status_netdevices(
 
 def test_get_status_device(requests_mock, labapi, mock_status_data):
     requests_mock.get(
-        f"{labapi.base_url}/{labapi.version}/status/test",
-        json=mock_status_data
+        f"{labapi.base_url}/{labapi.version}/status/test", json=mock_status_data
     )
     resp = labapi.get_status("test")
     assert resp == mock_status_data
