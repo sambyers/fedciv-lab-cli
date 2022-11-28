@@ -58,7 +58,10 @@ def test_get_status_netdevices(
     labapi,
     mock_status_data
 ):
-    requests_mock.get(f"{api_base_url}/status/network-devices/v1", json=mock_status_data)
+    requests_mock.get(
+        f"{api_base_url}/status/network-devices/v1",
+        json=mock_status_data
+    )
     resp = labapi.get_status_netdev()
     assert resp == mock_status_data
 
